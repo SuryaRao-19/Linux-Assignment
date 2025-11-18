@@ -1,3 +1,10 @@
+✅ STEP 1: Create each file
+Create backup script:
+nano backup.sh
+
+
+Paste this:
+
 #!/bin/bash
 # ---------------------------------------------------------
 # Script Name: backup.sh
@@ -6,30 +13,34 @@
 # Date       : 19-11-2025
 # ---------------------------------------------------------
 
-# Ask user for directory to back up
 echo "Enter the directory you want to back up:"
 read SOURCE_DIR
 
-# Backup folder
-BACKUP_DIR="$HOME/backups"
+# Check if directory exists
+if [ ! -d "$SOURCE_DIR" ]; then
+    echo "Error: Directory does not exist!"
+    exit 1
+fi
 
-# Create backup folder if not exists
+BACKUP_DIR="$HOME/backups"
 mkdir -p "$BACKUP_DIR"
 
-# Timestamp
 TIME=$(date +"%Y-%m-%d_%H-%M-%S")
-
-# Backup file name
 DEST="$BACKUP_DIR/backup_$TIME.tar.gz"
 
-# Create backup
 tar -czf "$DEST" "$SOURCE_DIR"
 
-echo "Backup created successfully at: $DEST"
+echo "Backup created successfully: $DEST"
 
 
+Save:
+CTRL + O → ENTER → CTRL + X
+
+✅ STEP 2: CPU & Memory Monitoring Script
+nano monitor.sh
 
 
+Paste:
 
 #!/bin/bash
 # ---------------------------------------------------------
@@ -41,56 +52,62 @@ echo "Backup created successfully at: $DEST"
 
 LOG_FILE="$HOME/system_usage.log"
 
-echo "Logging CPU and Memory usage. Press CTRL+C to stop."
-echo "----------------------------------------------"
+echo "System monitoring started. Press CTRL+C to stop."
 
 while true
 do
-    echo "----- $(date) -----" >> "$LOG_FILE"
+    {
+        echo "----- $(date) -----"
+        top -bn1 | grep "Cpu(s)"
+        free -h
+        echo "-------------------"
+    } >> "$LOG_FILE"
     
-    # CPU usage
-    top -bn1 | grep "Cpu(s)" >> "$LOG_FILE"
-    
-    # Memory usage
-    free -h >> "$LOG_FILE"
-
-    echo "----------------------------------------------" >> "$LOG_FILE"
-
-    sleep 5  # logs every 5 seconds
+    sleep 5
 done
 
 
+Save:
+CTRL + O → ENTER → CTRL + X
+
+✅ STEP 3: Download Script (Fully Fixed)
+nano download.sh
 
 
-
+Paste:
 
 #!/bin/bash
 # ---------------------------------------------------------
 # Script Name: download.sh
-# Purpose    : Download a file using wget and store it in Downloads folder
+# Purpose    : Download a file using wget
 # Author     : Surya Rao
 # Date       : 19-11-2025
 # ---------------------------------------------------------
 
-# Ask user for URL
-echo "Enter the URL of the file to download:"
+echo "Enter the URL to download:"
 read URL
 
-# Download location
-DEST="$HOME/Downloads"
+# Validate URL
+if [[ -z "$URL" ]]; then
+    echo "Error: URL cannot be empty!"
+    exit 1
+fi
 
-# Create folder if not exists
+DEST="$HOME/Downloads"
 mkdir -p "$DEST"
 
-# Download using wget
 wget -P "$DEST" "$URL"
 
-echo "File downloaded successfully to $DEST"
+echo "Download completed! File saved in: $DEST"
 
 
+Save:
+CTRL + O → ENTER → CTRL + X
 
+✅ STEP 4: Give permissions
+chmod +x backup.sh monitor.sh download.sh
 
-
-chmod +x backup.sh
-chmod +x monitor.sh
-chmod +x download.sh
+✅ STEP 5: Run scripts
+./backup.sh
+./monitor.sh
+./download.sh
