@@ -1,70 +1,96 @@
-
 #!/bin/bash
+# ---------------------------------------------------------
 # Script Name: backup.sh
-# Author: Surya Rao
-# Date: 2025-11-18
-# Purpose: Backup a directory into backup folder with timestamp.
+# Purpose    : Backup a directory with timestamp
+# Author     : Surya Rao
+# Date       : 19-11-2025
+# ---------------------------------------------------------
 
-SOURCE="/home/surya/Documents"
-DEST="/home/surya/backup_$(date +%Y%m%d_%H%M%S)"
+# Ask user for directory to back up
+echo "Enter the directory you want to back up:"
+read SOURCE_DIR
 
-mkdir -p "$DEST"
-cp -r "$SOURCE" "$DEST"
+# Backup folder
+BACKUP_DIR="$HOME/backups"
 
-echo "Backup completed successfully!"
+# Create backup folder if not exists
+mkdir -p "$BACKUP_DIR"
+
+# Timestamp
+TIME=$(date +"%Y-%m-%d_%H-%M-%S")
+
+# Backup file name
+DEST="$BACKUP_DIR/backup_$TIME.tar.gz"
+
+# Create backup
+tar -czf "$DEST" "$SOURCE_DIR"
+
+echo "Backup created successfully at: $DEST"
+
 
 
 
 
 #!/bin/bash
+# ---------------------------------------------------------
 # Script Name: monitor.sh
-# Author: Surya Rao
-# Date: 2025-11-18
-# Purpose: Log CPU and Memory usage to a file.
+# Purpose    : Log CPU and Memory usage every 5 seconds
+# Author     : Surya Rao
+# Date       : 19-11-2025
+# ---------------------------------------------------------
 
-LOGFILE="/home/surya/system_log.txt"
+LOG_FILE="$HOME/system_usage.log"
 
-echo "Logging CPU and Memory usage..." >> $LOGFILE
-echo "Time: $(date)" >> $LOGFILE
-top -b -n1 | head -5 >> $LOGFILE
-echo "---------------------------------" >> $LOGFILE
+echo "Logging CPU and Memory usage. Press CTRL+C to stop."
+echo "----------------------------------------------"
+
+while true
+do
+    echo "----- $(date) -----" >> "$LOG_FILE"
+    
+    # CPU usage
+    top -bn1 | grep "Cpu(s)" >> "$LOG_FILE"
+    
+    # Memory usage
+    free -h >> "$LOG_FILE"
+
+    echo "----------------------------------------------" >> "$LOG_FILE"
+
+    sleep 5  # logs every 5 seconds
+done
+
+
 
 
 
 
 #!/bin/bash
+# ---------------------------------------------------------
 # Script Name: download.sh
-# Author: Surya Rao
-# Date: 2025-11-18
-# Purpose: Download a file using wget.
+# Purpose    : Download a file using wget and store it in Downloads folder
+# Author     : Surya Rao
+# Date       : 19-11-2025
+# ---------------------------------------------------------
 
-URL="https://example.com/samplefile.txt"
-DEST="/home/surya/Downloads"
+# Ask user for URL
+echo "Enter the URL of the file to download:"
+read URL
 
+# Download location
+DEST="$HOME/Downloads"
+
+# Create folder if not exists
+mkdir -p "$DEST"
+
+# Download using wget
 wget -P "$DEST" "$URL"
 
-echo "Download completed!"
+echo "File downloaded successfully to $DEST"
 
 
 
 
 
-# Linux Shell Assignment
-
-This repository contains my Linux automation scripts created as part 
-of Assignment 02 for the course ETCCCP105.
-
-## Scripts Included
-1. backup.sh – Backs up a directory with timestamp.
-2. monitor.sh – Logs CPU & memory usage.
-3. download.sh – Downloads a file from the internet.
-
-## How to Run
-chmod +x scriptname.sh
-./scriptname.sh
-
-## Evidence
-Screenshots folder contains:
-- Command outputs
-- Script execution proofs
-- Ubuntu installation steps
+chmod +x backup.sh
+chmod +x monitor.sh
+chmod +x download.sh
