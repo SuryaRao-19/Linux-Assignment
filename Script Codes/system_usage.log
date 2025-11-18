@@ -1,0 +1,6 @@
+----- Wed Nov 19 00:48:57 IST 2025 -----
+%Cpu(s):  4.2 us,  8.3 sy,  0.0 ni, 87.5 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st 
+               total        used        free      shared  buff/cache   available
+Mem:           3.8Gi       1.8Gi       400Mi        55Mi       1.7Gi       2.0Gi
+Swap:          3.8Gi          0B       3.8Gi
+-------------------
