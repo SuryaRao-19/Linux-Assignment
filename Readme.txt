@@ -111,3 +111,9 @@ chmod +x backup.sh monitor.sh download.sh
 ./backup.sh
 ./monitor.sh
 ./download.sh
+
+
+
+
+https://speed.hetzner.de/1KB.bin
+
